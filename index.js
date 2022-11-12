@@ -1,3 +1,10 @@
+
+
+//Install the package with npm install node-fetch in terminal.//
+//Import the package at the top of your index.js file//
+//using this code below//
+import fetch from 'node-fetch'
+
 // Import the express library and assign it to a variable
 import express from 'express'
 
@@ -34,12 +41,30 @@ app.get('/firstName/:firstName/lastName/:lastName', (req, res) => {
 //后host terminal便会接收到信息 { firstName: 'Or', lastName: 'Zubalsky' }//
 //从而使guest terminal产出content:  : {"data":"The full name is Or Zubalsky"} //
 
-
-
-
-
 // Set the application to listen a port
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}` )
+})
+
+
+
+// Example of an application route that makes a request to another server
+// inorder to run it, type//
+//curl 127.0.0.1:3001/advice//
+//in the guest terminal//
+app.get('/advice', async (req, res) => {
+  // Make a request to another wbesite and wait for a response
+  const response = await fetch('https://api.adviceslip.com/advice')
+
+  // Read the response
+  const body = await response.json()
+
+  // Print the repsonse body to the console
+  console.log(body)
+
+  // Get the advice text string from the response body object
+  const advice = body.slip.advice
+
+  res.json({ data: advice })
 })
 
